@@ -1,0 +1,54 @@
+<div class="container mb-5">
+  <div
+    *ngFor="let message of messages"
+    class="row p-3 align-items-center border-bottom"
+  >
+    <div class="col-2 text-center">
+      <img
+        height="50"
+        width="50"
+        [src]="
+          message.isResponse === true
+            ? '../../assets/img/chatgpt.jpg'
+            : '../../assets/img/user.png'
+        "
+        class="rounded"
+        alt="user_photo"
+      />
+    </div>
+    <div class="col-10">
+      {{ message.message }}
+    </div>
+  </div>
+</div>
+
+<div class="position-fixed bottom-0 start-50 w-100 p-3 translate-middle-x">
+  <div class="container">
+    <div class="row">
+      <div class="input-group">
+        <textarea
+          class="form-control custom-textarea"
+          placeholder="Type something..."
+          rows="1"
+          name="textInput"
+          #textInput
+          (keyup.enter)="createCompletion(textInput)"
+        ></textarea>
+        <button class="btn btn-outline-secondary" type="button">
+          <i
+            *ngIf="isBusy === false"
+            (click)="createCompletion(textInput)"
+            class="fa-regular fa-paper-plane"
+          ></i>
+          <div
+            *ngIf="isBusy === true"
+            class="spinner-border spinner-border-sm text-secondary"
+            role="status"
+          >
+            <span class="sr-only">Loading...</span>
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

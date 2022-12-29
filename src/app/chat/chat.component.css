@@ -1,0 +1,11 @@
+.custom-textarea{
+    resize: none;
+    overflow-y: hidden;
+    border-right: none;
+}
+
+.input-group button{
+    border-left: none;
+    background-color: transparent;
+    border-color: #dee2e6;
+}
