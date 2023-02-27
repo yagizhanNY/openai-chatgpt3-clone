@@ -4,7 +4,7 @@ Fun project to get much familiar with TailwindCSS and still be able to use ChatG
 
 It's looks like;
 
-![main_screen](../screenshots/main_screen.png)
+![main_screen](./screenshots/main_screen.png)
 
 Happy chating 🤟🏻
 
