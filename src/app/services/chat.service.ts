@@ -10,7 +10,7 @@ export class ChatService {
   constructor() {
     const configuration = new Configuration({
       organization: environment.organizationId,
-      apiKey: environment.openaiApiKey,
+      apiKey: environment.openAiApiKey,
     });
 
     this.openai = new OpenAIApi(configuration);

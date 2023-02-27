@@ -1,9 +1,11 @@
-<div class="container mb-5">
-  <div
-    *ngFor="let message of messages"
-    class="row p-3 align-items-center border-bottom"
-  >
-    <div class="col-2 text-center">
+<div class="h-full">
+  <div *ngFor="let message of messages" class="h-full mx-5 lg:mx-64 text-white">
+    <div
+      [class]="
+        'flex items-center p-5 ' +
+        (message.isResponse === true ? 'bg-[#40414E]' : '')
+      "
+    >
       <img
         height="50"
         width="50"
@@ -12,17 +14,46 @@
             ? '../../assets/img/chatgpt.jpg'
             : '../../assets/img/user.png'
         "
-        class="rounded"
+        class="rounded-full mr-10"
         alt="user_photo"
       />
-    </div>
-    <div class="col-10">
-      {{ message.message }}
+      <div class="col-10">
+        {{ message.message }}
+      </div>
     </div>
   </div>
 </div>
 
-<div class="position-fixed bottom-0 start-50 w-100 p-3 translate-middle-x">
+<div class="fixed bottom-10 top-auto w-full">
+  <div class="flex w-full">
+    <div class="flex w-full items-center mx-5 p-4 lg:mx-64">
+      <textarea
+        class="w-full p-3 bg-[#40414E] text-white rounded-l-md resize-none focus:outline-none"
+        placeholder="Type something..."
+        rows="1"
+        name="textInput"
+        #textInput
+        (keyup.enter)="createCompletion(textInput)"
+      ></textarea>
+      <button class="bg-[#40414E] p-3 rounded-r-md" type="button">
+        <i
+          *ngIf="isBusy === false"
+          (click)="createCompletion(textInput)"
+          class="fa-regular fa-paper-plane text-white"
+        ></i>
+        <div
+          *ngIf="isBusy === true"
+          class="inline-block h-5 w-5 text-white animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
+          role="status"
+        >
+          <span class="sr-only">Loading...</span>
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- <div class="position-fixed bottom-0 start-50 w-100 p-3 translate-middle-x">
   <div class="container">
     <div class="row">
       <div class="input-group">
@@ -51,4 +82,4 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
