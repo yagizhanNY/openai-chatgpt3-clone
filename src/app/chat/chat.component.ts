@@ -38,11 +38,15 @@ export class ChatComponent implements OnInit, AfterViewChecked {
 
     this.isBusy = true;
 
-    const completion = await this.chatService.createCompletion(prompt);
-    this.messages.push({
-      isResponse: true,
-      message: completion.data.choices[0].text!,
-    });
+    try {
+      const completion = await this.chatService.createCompletion(prompt);
+      this.messages.push({
+        isResponse: true,
+        message: completion.data.choices[0].message?.content!,
+      });
+    } catch (err) {
+      console.log(err);
+    }
 
     this.isBusy = false;
 

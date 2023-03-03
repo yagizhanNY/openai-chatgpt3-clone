@@ -17,15 +17,10 @@ export class ChatService {
   }
 
   async createCompletion(prompt: string) {
-    return await this.openai.createCompletion(
+    return await this.openai.createChatCompletion(
       {
-        model: 'text-davinci-003',
-        prompt: prompt,
-        temperature: 0,
-        max_tokens: 1000,
-        top_p: 1,
-        frequency_penalty: 0,
-        presence_penalty: 0,
+        model: 'gpt-3.5-turbo',
+        messages: [{ role: 'user', content: prompt }],
       },
       {
         headers: {
