@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "chatgpt-clone-yny": {
+      "hosting": {
+        "open-ai-web": [
+          "chatgpt-clone-yny"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "chatgpt-clone-yny"
+  }
+}
