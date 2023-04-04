@@ -38,4 +38,4 @@ Then you are ready to run the application!
 npm run start
 ```
 
-You can try the [DEMO.](http://yny-openai-clone.s3-website.eu-west-2.amazonaws.com/)
+You can try the [DEMO.](chatgpt-clone-yny.web.app/)
