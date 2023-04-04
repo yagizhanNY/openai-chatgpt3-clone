@@ -1,12 +1,7 @@
-import {
-  AfterViewChecked,
-  Component,
-  ElementRef,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { AfterViewChecked, Component, OnInit, ViewChild } from '@angular/core';
 import { ChatService } from '../services/chat.service';
 import { Message } from '../shared/models/message.model';
+import { MarkdownService } from 'ngx-markdown';
 
 @Component({
   selector: 'app-chat',
@@ -14,7 +9,10 @@ import { Message } from '../shared/models/message.model';
   styleUrls: ['./chat.component.css'],
 })
 export class ChatComponent implements OnInit, AfterViewChecked {
-  constructor(private chatService: ChatService) {}
+  constructor(
+    private chatService: ChatService,
+    private markdownService: MarkdownService
+  ) {}
   ngAfterViewChecked(): void {
     this.scrollToBottom();
   }
@@ -42,7 +40,9 @@ export class ChatComponent implements OnInit, AfterViewChecked {
       const completion = await this.chatService.createCompletion(prompt);
       this.messages.push({
         isResponse: true,
-        message: completion.data.choices[0].message?.content!,
+        message: this.markdownService.parse(
+          completion.data.choices[0].message?.content!
+        ),
       });
     } catch (err) {
       console.log(err);

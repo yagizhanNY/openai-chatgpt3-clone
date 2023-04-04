@@ -1,5 +1,5 @@
 <div class="mb-32">
-  <div *ngFor="let message of messages" class="h-full mx-5 lg:mx-64 text-white">
+  <div *ngFor="let message of messages" class="h-full mx-5 lg:mx-96 text-white">
     <div
       [class]="
         'flex items-center p-5 ' +
@@ -17,16 +17,14 @@
         class="rounded-full mr-10"
         alt="user_photo"
       />
-      <div class="col-10">
-        {{ message.message }}
-      </div>
+      <div class="prose prose-invert" [innerHTML]="message.message"></div>
     </div>
   </div>
 </div>
 
 <div class="fixed bottom-10 top-auto w-full">
   <div class="flex w-full">
-    <div class="flex w-full items-center mx-5 p-4 lg:mx-64">
+    <div class="flex w-full items-center mx-5 p-4 lg:mx-96">
       <textarea
         class="w-full p-3 bg-[#40414E] text-white rounded-l-md resize-none focus:outline-none"
         placeholder="Type something..."
