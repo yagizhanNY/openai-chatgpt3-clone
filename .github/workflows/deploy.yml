@@ -21,6 +21,10 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
+      - name: Create env Files
+        run: node envManager.js
+        env:
+          API_DETAILS: "${{ secret.API_DETAILS }}"
       - name: Install dependencies
         run: npm ci
       - name: Install Angular CLI
