@@ -1,4 +1,11 @@
-import { AfterViewChecked, Component, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewChecked,
+  AfterViewInit,
+  Component,
+  OnInit,
+  ViewChild,
+  ElementRef,
+} from '@angular/core';
 import { ChatService } from '../services/chat.service';
 import { Message } from '../shared/models/message.model';
 import { MarkdownService } from 'ngx-markdown';
@@ -8,19 +15,28 @@ import { MarkdownService } from 'ngx-markdown';
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css'],
 })
-export class ChatComponent implements OnInit, AfterViewChecked {
+export class ChatComponent implements OnInit, AfterViewChecked, AfterViewInit {
   constructor(
     private chatService: ChatService,
     private markdownService: MarkdownService
   ) {}
-  ngAfterViewChecked(): void {
-    this.scrollToBottom();
-  }
 
   @ViewChild('window') window!: any;
   messages: Message[] = [];
   isBusy: boolean = false;
+  @ViewChild('textInput', { static: true }) textInputRef!: ElementRef;
+
   ngOnInit(): void {
+    this.scrollToBottom();
+  }
+
+  ngAfterViewInit() {
+    this.textInputRef.nativeElement.focus();
+  }
+
+  // Other component code...
+
+  ngAfterViewChecked(): void {
     this.scrollToBottom();
   }
 
