@@ -1,4 +1,4 @@
-<div class="mb-32 mt-24">
+<div class="mb-32">
   <div *ngFor="let message of messages" class="h-full mx-5 lg:mx-96 text-white">
     <div
       [class]="
@@ -17,7 +17,9 @@
         class="rounded-full mr-10"
         alt="user_photo"
       />
-      <div class="prose prose-invert" [innerHTML]="message.message"></div>
+      <div class="align-middle">
+        <div class="prose prose-invert" [innerHTML]="message.message"></div>
+      </div>
     </div>
   </div>
 </div>
