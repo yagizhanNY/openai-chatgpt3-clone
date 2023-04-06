@@ -7,7 +7,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 import { ChatComponent } from './chat/chat.component';
 import { MarkdownModule } from 'ngx-markdown';
-import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [AppComponent, NavbarComponent, ChatComponent],
