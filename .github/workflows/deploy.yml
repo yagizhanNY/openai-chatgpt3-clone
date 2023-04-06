@@ -26,7 +26,7 @@ jobs:
       - name: Install Angular CLI
         run: npm install @angular/cli
       - name: Build
-        run: ng build --prod
+        run: npm run build:prod
       - name: Deploy
         uses: w9jds/firebase-action@master
         with:
