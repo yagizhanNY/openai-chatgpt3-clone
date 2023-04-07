@@ -5,6 +5,7 @@ import {
   OnInit,
   ViewChild,
   ElementRef,
+  Input,
 } from '@angular/core';
 import { ChatService } from '../services/chat.service';
 import { Message } from '../shared/models/message.model';
@@ -25,6 +26,7 @@ export class ChatComponent implements OnInit, AfterViewChecked, AfterViewInit {
   messages: Message[] = [];
   isBusy: boolean = false;
   @ViewChild('textInput', { static: true }) textInputRef!: ElementRef;
+  sideBarOnDisplay = true;
 
   ngOnInit(): void {
     this.scrollToBottom();
@@ -38,6 +40,10 @@ export class ChatComponent implements OnInit, AfterViewChecked, AfterViewInit {
 
   ngAfterViewChecked(): void {
     this.scrollToBottom();
+  }
+
+  updateSideBarOnDisplayEvent(sidebar: boolean): void {
+    this.sideBarOnDisplay = sidebar;
   }
 
   async createCompletion(element: HTMLTextAreaElement) {
