@@ -27,6 +27,7 @@ export class ChatComponent implements OnInit, AfterViewChecked, AfterViewInit {
   @ViewChild('textInput', { static: true }) textInputRef!: ElementRef;
 
   ngOnInit(): void {
+    this.getLocalMessagesFromLocalStorage();
     this.scrollToBottom();
   }
 
@@ -48,6 +49,7 @@ export class ChatComponent implements OnInit, AfterViewChecked, AfterViewInit {
       message: prompt,
     });
 
+    this.saveMessageToLocalStorage();
     this.scrollToBottom();
 
     this.isBusy = true;
@@ -60,6 +62,7 @@ export class ChatComponent implements OnInit, AfterViewChecked, AfterViewInit {
           completion.data.choices[0].message?.content!
         ),
       });
+      this.saveMessageToLocalStorage();
     } catch (err) {
       console.log(err);
     }
@@ -71,5 +74,17 @@ export class ChatComponent implements OnInit, AfterViewChecked, AfterViewInit {
 
   scrollToBottom() {
     window.scrollTo(0, document.body.scrollHeight);
+  }
+
+  saveMessageToLocalStorage() {
+    localStorage.setItem(MESSAGES, JSON.stringify(this.messages));
+  }
+
+  getLocalMessagesFromLocalStorage() {
+    const localMessages = localStorage.getItem(MESSAGES);
+
+    if (localMessages) {
+      this.messages = JSON.parse(localMessages) as Message[];
+    }
   }
 }
