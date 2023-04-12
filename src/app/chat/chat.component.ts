@@ -45,7 +45,6 @@ export class ChatComponent implements OnInit, AfterViewChecked, AfterViewInit {
         this.store.dispatch(updateChatDataAction({ newChatMessage: message }));
       });
     }
-    console.log(this.messages);
   }
 
   ngAfterViewInit() {
@@ -77,12 +76,6 @@ export class ChatComponent implements OnInit, AfterViewChecked, AfterViewInit {
       const completionMessage = this.markdownService.parse(
         completion.data.choices[0].message?.content!
       );
-      // this.messages.push({
-      //   isResponse: true,
-      //   message: this.markdownService.parse(
-      //     completion.data.choices[0].message?.content!
-      //   ),
-      // });
 
       const responseMessage: Message = {
         isResponse: true,
