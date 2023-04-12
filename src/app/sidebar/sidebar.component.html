@@ -1,0 +1,34 @@
+<nav
+  class="bg-gray-900 absolute px-3 py-2 top-0 left-0 cursor-pointer"
+  (click)="closeSideBarMenu()"
+>
+  <button
+    type="button"
+    class="text-white hover:text-gray-200 focus:outline-none focus:text-gray-200"
+    aria-label="Toggle mobile menu"
+  >
+    <svg viewBox="0 0 20 20" class="h-6 w-6 fill-current">
+      <path
+        fill-rule="evenodd"
+        d="M2 5h16v1H2V5zm0 4h16v1H2V9zm0 4h16v1H2v-1z"
+      ></path>
+    </svg>
+  </button>
+</nav>
+
+<div
+  *ngIf="showSideBar"
+  class="hidden bg-gray-900 text-cyan-50 h-full md:inset-y-0 md:flex md:w-[260px] md:flex-col fixed"
+>
+  <div class="h-3/4 flex-col overflow-y-auto">
+    <div class="flex justify-end gap-7">
+      <app-navbar-title></app-navbar-title>
+      <span class="cursor-pointer py-3 px-2" (click)="closeSideBarMenu()"
+        >X</span
+      >
+    </div>
+  </div>
+  <div class="h-1/4">
+    <app-buttons></app-buttons>
+  </div>
+</div>
