@@ -25,7 +25,7 @@ export class ChatService {
       {
         headers: {
           'Content-Type': 'application/json',
-          'User-Agent': 'OpenAPI-Generator/1.0/Javascript',
+          'X-User-Agent': 'OpenAPI-Generator/1.0/Javascript',
         },
       }
     );
