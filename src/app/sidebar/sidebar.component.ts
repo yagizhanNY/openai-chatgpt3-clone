@@ -13,15 +13,7 @@ import {
   styleUrls: ['./sidebar.component.css'],
 })
 export class SidebarComponent implements OnInit {
-  showSideBar: boolean = true;
-  @Output() sideBarOnDisplayEvent = new EventEmitter();
-
   constructor() {}
 
   ngOnInit(): void {}
-
-  closeSideBarMenu() {
-    this.showSideBar = !this.showSideBar;
-    this.sideBarOnDisplayEvent.emit(this.showSideBar);
-  }
 }

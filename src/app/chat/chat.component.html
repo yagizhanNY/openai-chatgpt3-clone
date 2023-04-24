@@ -1,10 +1,8 @@
 <div class="overflow-hidden w-full h-full relative">
-  <app-sidebar
-    (sideBarOnDisplayEvent)="updateSideBarOnDisplayEvent($event)"
-  ></app-sidebar>
+  <app-sidebar></app-sidebar>
   <div
-    [ngClass]="sideBarOnDisplay ? 'md:pl-[260px]' : ''"
-    class="flex justify-between min-h-screen flex-col"
+    id="chat-content-container"
+    class="flex justify-between min-h-screen flex-col md:pl-[320px]"
   >
     <div class="mb-32 h-3/4">
       <div *ngFor="let message of messages" class="h-full mx-5 text-white">

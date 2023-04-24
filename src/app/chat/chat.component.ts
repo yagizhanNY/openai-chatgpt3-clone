@@ -26,7 +26,6 @@ export class ChatComponent implements OnInit, AfterViewChecked, AfterViewInit {
   messages: Message[] = [];
   isBusy: boolean = false;
   @ViewChild('textInput', { static: true }) textInputRef!: ElementRef;
-  sideBarOnDisplay = true;
 
   ngOnInit(): void {
     this.scrollToBottom();
@@ -36,14 +35,8 @@ export class ChatComponent implements OnInit, AfterViewChecked, AfterViewInit {
     this.textInputRef.nativeElement.focus();
   }
 
-  // Other component code...
-
   ngAfterViewChecked(): void {
     this.scrollToBottom();
-  }
-
-  updateSideBarOnDisplayEvent(sidebar: boolean): void {
-    this.sideBarOnDisplay = sidebar;
   }
 
   async createCompletion(element: HTMLTextAreaElement) {
