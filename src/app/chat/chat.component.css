@@ -1,11 +1,17 @@
-.custom-textarea{
-    resize: none;
-    overflow-y: hidden;
-    border-right: none;
+.custom-textarea {
+  resize: none;
+  overflow-y: hidden;
+  border-right: none;
 }
 
-.input-group button{
-    border-left: none;
-    background-color: transparent;
-    border-color: #dee2e6;
+.input-group button {
+  border-left: none;
+  background-color: transparent;
+  border-color: #dee2e6;
+}
+
+@media (min-width: 640px) and (max-width: 768px) {
+  #chat-content-container {
+    padding-left: 15rem;
+  }
 }

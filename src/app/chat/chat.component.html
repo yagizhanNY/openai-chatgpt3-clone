@@ -1,32 +1,35 @@
-<div class="mb-32">
-  <div *ngFor="let message of messages" class="h-full mx-5 lg:mx-96 text-white">
-    <div
-      [class]="
-        'flex items-center p-5 ' +
-        (message.isResponse === true ? 'bg-[#40414E]' : '')
-      "
-    >
-      <img
-        height="50"
-        width="50"
-        [src]="
-          message.isResponse === true
-            ? '../../assets/img/chatgpt.jpg'
-            : '../../assets/img/user.png'
-        "
-        class="rounded-full mr-10"
-        alt="user_photo"
-      />
-      <div class="align-middle">
-        <div class="prose prose-invert" [innerHTML]="message.message"></div>
+<div class="overflow-hidden w-full h-full relative">
+  <app-sidebar></app-sidebar>
+  <div
+    id="chat-content-container"
+    class="flex justify-between min-h-screen flex-col md:pl-[320px]"
+  >
+    <div class="mb-32 h-3/4">
+      <div *ngFor="let message of messages" class="h-full mx-5 text-white">
+        <div
+          [class]="
+            'flex items-center p-5 ' +
+            (message.isResponse === true ? 'bg-[#40414E]' : '')
+          "
+        >
+          <img
+            height="50"
+            width="50"
+            [src]="
+              message.isResponse === true
+                ? '../../assets/img/chatgpt.jpg'
+                : '../../assets/img/user.png'
+            "
+            class="rounded-full mr-10"
+            alt="user_photo"
+          />
+          <div class="align-middle">
+            <div class="prose prose-invert" [innerHTML]="message.message"></div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
-
-<div class="fixed bottom-10 top-auto w-full">
-  <div class="flex w-full">
-    <div class="flex w-full items-center mx-5 p-4 lg:mx-96">
+    <div class="flex mx-5 p-4">
       <textarea
         class="w-full p-3 bg-[#40414E] text-white rounded-l-md resize-none focus:outline-none"
         placeholder="Type something..."
