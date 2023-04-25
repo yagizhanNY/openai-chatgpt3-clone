@@ -25,6 +25,7 @@
     "@ngrx/router-store": "^14.3.0",
     "@ngrx/store": "^14.3.0",
     "@ngrx/store-devtools": "^14.3.0",
+    "flowbite": "^1.6.5",
     "marked": "^4.3.0",
     "ng-process-env": "^15.0.1",
     "ngx-markdown": "^14.0.1",
