@@ -1,0 +1,5 @@
+@media (min-width: 640px) and (max-width: 768px) {
+  #separator-sidebar {
+    width: 15rem;
+  }
+}

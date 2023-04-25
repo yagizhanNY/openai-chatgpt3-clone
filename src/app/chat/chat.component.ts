@@ -5,6 +5,7 @@ import {
   OnInit,
   ViewChild,
   ElementRef,
+  Input,
 } from '@angular/core';
 import { ChatService } from '../services/chat.service';
 import { Message } from '../shared/models/message.model';
@@ -50,8 +51,6 @@ export class ChatComponent implements OnInit, AfterViewChecked, AfterViewInit {
   ngAfterViewInit() {
     this.textInputRef.nativeElement.focus();
   }
-
-  // Other component code...
 
   ngAfterViewChecked(): void {
     this.scrollToBottom();
