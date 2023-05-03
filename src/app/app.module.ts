@@ -15,6 +15,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { reducers } from './store/reducers/ChatData.reducer';
+import { ChatContentComponent } from './chat/chat-content/chat-content.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { reducers } from './store/reducers/ChatData.reducer';
     NavbarTitleComponent,
     ButtonsComponent,
     SidebarComponent,
+    ChatContentComponent,
   ],
   imports: [
     StoreModule.forRoot(reducers),

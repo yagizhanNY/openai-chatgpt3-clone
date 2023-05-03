@@ -8,7 +8,17 @@ import { Message } from '../shared/models/message.model';
 export class ChatDataService {
   constructor(private store: Store) {}
 
-  public setLocalStorage(chatName: string, chatData: Message[]): void {
+  public setLocalStorageForAllChat(
+    chatName: string,
+    chatData: Message[]
+  ): void {
+    localStorage.setItem(`${chatName}`, JSON.stringify(chatData));
+  }
+
+  public setLocalStorageForSingleChat(
+    chatName: string,
+    chatData: Message
+  ): void {
     localStorage.setItem(`${chatName}`, JSON.stringify(chatData));
   }
 

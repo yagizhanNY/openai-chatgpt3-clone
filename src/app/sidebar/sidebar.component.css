@@ -3,3 +3,9 @@
     width: 15rem;
   }
 }
+
+.active {
+  background-color: rgb(95, 94, 94);
+  border-radius: 6px;
+  color: white;
+}
