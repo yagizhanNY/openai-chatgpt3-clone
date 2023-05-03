@@ -25,6 +25,7 @@ import { ChatContentComponent } from './chat/chat-content/chat-content.component
     ButtonsComponent,
     SidebarComponent,
     ChatContentComponent,
+
   ],
   imports: [
     StoreModule.forRoot(reducers),
