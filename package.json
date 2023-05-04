@@ -14,7 +14,7 @@
     "@angular/cdk": "^13.3.9",
     "@angular/common": "^14.3.0",
     "@angular/compiler": "^14.3.0",
-    "@angular/core": "^14.0.0",
+    "@angular/core": "^14.3.0",
     "@angular/fire": "^7.5.0",
     "@angular/forms": "^14.3.0",
     "@angular/platform-browser": "^14.3.0",

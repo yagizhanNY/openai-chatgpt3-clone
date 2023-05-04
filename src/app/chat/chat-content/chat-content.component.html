@@ -1,0 +1,62 @@
+<div
+  id="chat-content-container"
+  class="flex justify-between min-h-screen flex-col md:pl-[320px]"
+>
+  <ng-template #elseBlock>
+    <div [class]="'justify-center flex items-center p-5'">
+      <h1 [class]="'text-white'">Please start typing some prompt...</h1>
+    </div>
+  </ng-template>
+
+  <div class="mb-32 h-3/4" *ngIf="messages.length > 1; else elseBlock">
+    <div *ngFor="let message of messages" class="h-full mx-5 text-white">
+      <div *ngIf="message.message !== null">
+        <div
+          [class]="
+            'flex items-center p-5 ' +
+            (message.isResponse === true ? 'bg-[#40414E]' : '')
+          "
+        >
+          <img
+            height="50"
+            width="50"
+            [src]="
+              message.isResponse === true
+                ? '../../assets/img/chatgpt.jpg'
+                : '../../assets/img/user.png'
+            "
+            class="rounded-full mr-10"
+            alt="user_photo"
+          />
+          <div class="align-middle">
+            <div class="prose prose-invert" [innerHTML]="message.message"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="flex mx-5 p-4">
+    <textarea
+      class="w-full p-3 bg-[#40414E] text-white rounded-l-md resize-none focus:outline-none"
+      placeholder="Type something..."
+      rows="1"
+      name="textInput"
+      #textInput
+      (keyup.enter)="createCompletion(textInput)"
+    ></textarea>
+    <button class="bg-[#40414E] p-3 rounded-r-md" type="button">
+      <i
+        *ngIf="isBusy === false"
+        (click)="createCompletion(textInput)"
+        class="fa-regular fa-paper-plane text-white"
+      ></i>
+      <div
+        *ngIf="isBusy === true"
+        class="inline-block h-5 w-5 text-white animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
+        role="status"
+      >
+        <span class="sr-only">Loading...</span>
+      </div>
+    </button>
+  </div>
+</div>
