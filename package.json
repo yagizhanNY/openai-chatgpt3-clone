@@ -30,6 +30,7 @@
     "ng-process-env": "^15.0.1",
     "ngx-markdown": "^14.0.1",
     "ngx-toastr": "^15.2.2",
+    "uuidv4": "^6.2.13",
     "openai": "^3.2.1",
     "rxjs": "^7.5.0",
     "tslib": "^2.3.0",
