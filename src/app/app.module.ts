@@ -16,6 +16,13 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { reducers } from './store/reducers/ChatData.reducer';
 import { ChatContentComponent } from './chat/chat-content/chat-content.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { UserDialogComponent } from './user-dialog/user-dialog.component';
+import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   declarations: [
@@ -25,7 +32,7 @@ import { ChatContentComponent } from './chat/chat-content/chat-content.component
     ButtonsComponent,
     SidebarComponent,
     ChatContentComponent,
-
+    UserDialogComponent,
   ],
   imports: [
     StoreModule.forRoot(reducers),
@@ -35,11 +42,18 @@ import { ChatContentComponent } from './chat/chat-content/chat-content.component
       logOnly: environment.production,
     }),
     BrowserModule,
+    FormsModule,
+    MatDialogModule,
+    MatButtonModule,
     AppRoutingModule,
+    MatFormFieldModule,
+    MatInputModule,
     BrowserAnimationsModule,
+    ReactiveFormsModule,
     MarkdownModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent],
+  entryComponents: [UserDialogComponent],
 })
 export class AppModule {}

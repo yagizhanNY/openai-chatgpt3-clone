@@ -49,14 +49,14 @@ export class ChatContentComponent
         this.messages = JSON.parse(storedChatData);
       }
     }
-    const firstChatConversation = localStorage.key(0);
+    const firstChatConversation = this.getFirstChatConversation();
     let currMessagesFromStore = null;
     if (firstChatConversation !== null) {
       currMessagesFromStore = this.chatDataService.getLocalStorage(
         firstChatConversation
       );
     }
-    if (currMessagesFromStore !== null) {
+    if (currMessagesFromStore !== null && currMessagesFromStore !== 'apiKey') {
       this.messages = JSON.parse(currMessagesFromStore);
       this.messages.forEach((message) => {
         this.store.dispatch(updateChatDataAction({ newChatMessage: message }));
@@ -69,6 +69,17 @@ export class ChatContentComponent
       });
   }
 
+  getFirstChatConversation(): string | null {
+    let firstChatConversation = null;
+    for (let key in localStorage) {
+      if (key !== 'apiKey') {
+        firstChatConversation = key;
+        return firstChatConversation;
+      }
+    }
+    return firstChatConversation;
+  }
+
   ngAfterViewInit() {
     this.textInputRef.nativeElement.focus();
   }
@@ -79,7 +90,6 @@ export class ChatContentComponent
 
   async createCompletion(element: HTMLTextAreaElement) {
     const id = this.route.snapshot.paramMap.get('id');
-    console.log(this.messages);
     const prompt = element.value;
     if (prompt.length <= 1 || this.isBusy) {
       element.value = '';

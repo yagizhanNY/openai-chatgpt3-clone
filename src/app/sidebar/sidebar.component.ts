@@ -11,15 +11,30 @@ import { Message } from '../shared/models/message.model';
 import { v4 as uuidv4 } from 'uuid';
 import { ChatService } from '../services/chat.service';
 import { Router } from '@angular/router';
-
+import {
+  MAT_DIALOG_DATA,
+  MatDialog,
+  MatDialogRef,
+  MatDialogConfig,
+} from '@angular/material/dialog';
+import { UserDialogComponent } from '../user-dialog/user-dialog.component';
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css'],
 })
 export class SidebarComponent implements OnInit {
+  constructor(
+    private chatDataService: ChatDataService,
+    private chatService: ChatService,
+    private router: Router,
+    private dialogModel: MatDialog
+  ) {}
+
+  userDialogBox!: MatDialogRef<UserDialogComponent>;
   totalChatConversation!: number;
   defaultConversation: string = '';
+  apiKey: string = '';
   allChatData: {
     [key: string]: {
       isResponse: boolean;
@@ -28,11 +43,6 @@ export class SidebarComponent implements OnInit {
     };
   } = {};
   keys: string[] = [];
-  constructor(
-    private chatDataService: ChatDataService,
-    private chatService: ChatService,
-    private router: Router
-  ) {}
 
   ngOnInit(): void {
     this.chatDataService.setTotalChatConversation(localStorage.length);
@@ -46,7 +56,7 @@ export class SidebarComponent implements OnInit {
     }
     for (let i = 0; i < this.totalChatConversation; i++) {
       const currentKeyString = localStorage.key(i);
-      if (currentKeyString !== null) {
+      if (currentKeyString !== null && currentKeyString !== 'apiKey') {
         let currentChat =
           this.chatDataService.getLocalStorage(currentKeyString);
         if (currentChat !== null) {
@@ -100,5 +110,25 @@ export class SidebarComponent implements OnInit {
   onChatBoxClick(uuid: string) {
     this.chatService.triggerEventForChatNavigation(uuid);
     this.router.navigate(['/chat', uuid]);
+  }
+
+  dialog() {
+    const dialogRef = this.dialogModel.open(UserDialogComponent, {
+      data: {
+        message:
+          "It's not stored in our end, it's only available in your browser localStorage",
+        title: 'Please enter you API key',
+      },
+      width: '350px',
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.apiKey = result.apiKey;
+        this.chatService.updateConfiguration(this.apiKey);
+      }
+      this.chatDataService.setAPIKeyToLocalStore(this.apiKey);
+      // console.log(`Dialog result: ${result.apiKey}  ${JSON.stringify(result)}`);
+    });
   }
 }

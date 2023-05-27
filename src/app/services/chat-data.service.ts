@@ -35,4 +35,16 @@ export class ChatDataService {
   public getTotalChatConversation(): number {
     return this.totalChatConversation;
   }
+
+  public setAPIKeyToLocalStore(key: string) {
+    localStorage.setItem('apiKey', key);
+  }
+
+  public getAPIKeyToLocalStore(): string | null {
+    const apiKey = localStorage.getItem('apiKey');
+    if (apiKey) {
+      return apiKey;
+    }
+    return null;
+  }
 }

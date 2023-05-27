@@ -7,19 +7,24 @@ import { Configuration, OpenAIApi } from 'openai';
 import { Observable, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Message } from '../shared/models/message.model';
+import { ChatDataService } from './chat-data.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ChatService {
-  openai: OpenAIApi;
+  openai!: OpenAIApi;
 
   private eventSubjectForChatCreation = new Subject<Message[]>();
   private eventSubjectForChatNavigation = new Subject<string>();
-  constructor() {
+
+  constructor(private chatDataService: ChatDataService) {
+    this.updateConfiguration(environment.openAiApiKey);
+  }
+
+  public updateConfiguration(apiKey: string): void {
     const configuration = new Configuration({
-      organization: environment.organizationId,
-      apiKey: environment.openAiApiKey,
+      apiKey: apiKey || (this.chatDataService.getAPIKeyToLocalStore() ?? ''),
     });
 
     this.openai = new OpenAIApi(configuration);
