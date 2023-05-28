@@ -34,7 +34,7 @@ export class ChatContentComponent
   ) {}
 
   @ViewChild('window') window!: any;
-  messages: Message[] = [];
+  public messages: Message[] = [];
   isBusy: boolean = false;
   currChatSelected: string = '';
   @ViewChild('textInput', { static: true }) textInputRef!: ElementRef;
@@ -78,8 +78,16 @@ export class ChatContentComponent
   }
 
   async createCompletion(element: HTMLTextAreaElement) {
+    const id = this.route.snapshot.paramMap.get('id');
+    console.log(this.messages);
+    // if (id) {
+    //   this.currChatSelected = id;
+    //   const storedChatData = this.chatDataService.getLocalStorage(id);
+    //   if (storedChatData) {
+    //     this.messages.push(JSON.parse(storedChatData));
+    //   }
+    // }
     const prompt = element.value;
-    console.log(prompt, prompt.length);
     if (prompt.length <= 1 || this.isBusy) {
       element.value = '';
       return;
@@ -88,15 +96,20 @@ export class ChatContentComponent
     const message: Message = {
       isResponse: false,
       message: prompt,
-      chatName: this.currChatSelected,
+      chatName:
+        'Chat ' +
+        JSON.stringify(this.chatDataService.getTotalChatConversation() + 1),
     };
-    this.store.dispatch(updateChatDataAction({ newChatMessage: message }));
-    this.store
-      .select((state) => state.data)
-      .subscribe((data) => {
-        this.messages = data;
-      });
-    this.scrollToBottom();
+
+    this.messages.push(message);
+
+    // this.store.dispatch(updateChatDataAction({ newChatMessage: message }));
+    // this.store
+    //   .select((state) => state.data)
+    //   .subscribe((data) => {
+    //     this.messages = data;
+    //   });
+    // this.scrollToBottom();
 
     try {
       this.isBusy = true;
@@ -110,23 +123,48 @@ export class ChatContentComponent
       const responseMessage: Message = {
         isResponse: true,
         message: completionMessage,
-        chatName: this.currChatSelected,
+        chatName:
+          'Chat ' +
+          JSON.stringify(this.chatDataService.getTotalChatConversation() + 1),
       };
-      this.store.dispatch(
-        updateChatDataAction({ newChatMessage: responseMessage })
-      );
 
-      this.store
-        .select((state) => state.data)
-        .subscribe((data) => {
-          this.messages = data;
-        });
-      this.chatDataService.setLocalStorageForAllChat(
-        this.currChatSelected,
-        this.messages
-      );
-      this.chatService.triggerEventForChatCreation(this.messages);
+      this.messages.push(responseMessage);
+      // this.store.dispatch(
+      //   updateChatDataAction({ newChatMessage: responseMessage })
+      // );
+
+      // this.store
+      //   .select((state) => state.data)
+      //   .subscribe((data) => {
+      //     this.messages = data;
+      //   });
+
+      // if (id) {
+      //   let currChatConversation = this.chatDataService.getLocalStorage(id);
+      //   if (!currChatConversation) {
+      //     this.chatDataService.setLocalStorageForAllChat(
+      //       'Chat ' + this.chatDataService.getTotalChatConversation + 1,
+      //       message
+      //     );
+      //   } else {
+      //     currChatConversation = JSON.parse(currChatConversation);
+      //   }
+      // }
+      if (id && this.chatDataService.getLocalStorage(id)) {
+        this.chatDataService.setLocalStorageForAllChat(id, this.messages);
+      } else {
+        this.chatService.triggerEventForChatCreation(this.messages);
+      }
     } catch (err) {
+      const responseMessage: Message = {
+        isResponse: true,
+        message:
+          'API Request Failed, please check after some time or re-verify OpenAI key.',
+        chatName:
+          'Chat ' +
+          JSON.stringify(this.chatDataService.getTotalChatConversation() + 1),
+      };
+      this.messages.push(responseMessage);
       console.log(err);
     }
 

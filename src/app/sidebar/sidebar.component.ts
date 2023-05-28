@@ -18,7 +18,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./sidebar.component.css'],
 })
 export class SidebarComponent implements OnInit {
-  totalChatConversation: number = 1;
+  totalChatConversation!: number;
   defaultConversation: string = '';
   allChatData: {
     [key: string]: {
@@ -35,7 +35,11 @@ export class SidebarComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.totalChatConversation = localStorage.length;
+    this.chatDataService.setTotalChatConversation(localStorage.length);
+    this.totalChatConversation =
+      this.chatDataService.getTotalChatConversation();
+
+    this.chatDataService.getTotalChatConversation();
     if (this.totalChatConversation >= 1) {
       const currKey = localStorage.key(0);
       this.defaultConversation = currKey ? currKey : '';
@@ -67,14 +71,27 @@ export class SidebarComponent implements OnInit {
 
   addNewChat(data?: Message[]) {
     this.totalChatConversation += 1;
+    this.chatDataService.setTotalChatConversation(1);
     const newChatKey = uuidv4();
     this.keys.push(newChatKey);
-    const newChatDataArray: Message[] = [];
+    let newChatDataArray: Message[] = [];
     if (data) {
-      for (let i = 0; i < data?.length; i++) {
-        newChatDataArray.push(data[i]);
-      }
-
+      newChatDataArray = [...data];
+      // for (let i = 0; i < data?.length; i++) {
+      //   newChatDataArray.push(data[i]);
+      //   // if (i == 0) {
+      //   //   newChatDataArray[i].chatName = JSON.stringify(
+      //   //     this.totalChatConversation
+      //   //   );
+      //   // }
+      // }
+      // if (newChatDataArray.length > 0) {
+      //   const firstObject = newChatDataArray[0];
+      //   const [message, isResponse, chatName] = firstObject;
+      //   newChatDataArray[0].chatName = JSON.stringify(
+      //     this.totalChatConversation
+      //   );
+      // }
       this.chatDataService.setLocalStorageForAllChat(
         newChatKey,
         newChatDataArray
@@ -109,6 +126,6 @@ export class SidebarComponent implements OnInit {
     //   }
     // });
     this.chatService.triggerEventForChatNavigation(uuid);
-    // this.router.navigate(['/chat', uuid]);
+    this.router.navigate(['/chat', uuid]);
   }
 }

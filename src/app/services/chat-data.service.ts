@@ -6,6 +6,8 @@ import { Message } from '../shared/models/message.model';
   providedIn: 'root',
 })
 export class ChatDataService {
+  totalChatConversation: number = 0;
+
   constructor(private store: Store) {}
 
   public setLocalStorageForAllChat(
@@ -24,5 +26,13 @@ export class ChatDataService {
 
   public getLocalStorage(chatName: string) {
     return localStorage.getItem(chatName);
+  }
+
+  public setTotalChatConversation(chatCount: number) {
+    this.totalChatConversation += chatCount;
+  }
+
+  public getTotalChatConversation(): number {
+    return this.totalChatConversation;
   }
 }
