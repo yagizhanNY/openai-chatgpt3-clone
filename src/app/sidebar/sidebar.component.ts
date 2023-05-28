@@ -43,12 +43,6 @@ export class SidebarComponent implements OnInit {
     if (this.totalChatConversation >= 1) {
       const currKey = localStorage.key(0);
       this.defaultConversation = currKey ? currKey : '';
-      // let currentChatData = null;
-      // if (currKey) {
-      //   currentChatData = this.chatDataService.getLocalStorage(currKey);
-      // }
-      // if (currentChatData)
-      //   this.defaultConversation = JSON.parse(currentChatData);
     }
     for (let i = 0; i < this.totalChatConversation; i++) {
       const currentKeyString = localStorage.key(i);
@@ -77,21 +71,6 @@ export class SidebarComponent implements OnInit {
     let newChatDataArray: Message[] = [];
     if (data) {
       newChatDataArray = [...data];
-      // for (let i = 0; i < data?.length; i++) {
-      //   newChatDataArray.push(data[i]);
-      //   // if (i == 0) {
-      //   //   newChatDataArray[i].chatName = JSON.stringify(
-      //   //     this.totalChatConversation
-      //   //   );
-      //   // }
-      // }
-      // if (newChatDataArray.length > 0) {
-      //   const firstObject = newChatDataArray[0];
-      //   const [message, isResponse, chatName] = firstObject;
-      //   newChatDataArray[0].chatName = JSON.stringify(
-      //     this.totalChatConversation
-      //   );
-      // }
       this.chatDataService.setLocalStorageForAllChat(
         newChatKey,
         newChatDataArray
@@ -114,17 +93,11 @@ export class SidebarComponent implements OnInit {
   }
 
   getChatName(key: string) {
-    // console.log(this.allChatData[key][0].chatName);
     const currChatName = this.chatDataService.getLocalStorage(key);
     return currChatName ? JSON.parse(currChatName)[0]?.chatName : '';
   }
 
   onChatBoxClick(uuid: string) {
-    // this.chatService.getEventForChatCreation().subscribe((event: Message[]) => {
-    //   if (this.totalChatConversation === 0) {
-    //     this.addNewChat(event);
-    //   }
-    // });
     this.chatService.triggerEventForChatNavigation(uuid);
     this.router.navigate(['/chat', uuid]);
   }
