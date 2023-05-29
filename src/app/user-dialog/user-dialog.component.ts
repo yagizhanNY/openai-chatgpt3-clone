@@ -15,7 +15,7 @@ export class UserDialogComponent {
   message!: string;
 
   loginForm = new FormGroup({
-    apiKey: new FormControl(''),
+    apiKey: new FormControl(this.chatDataService.getAPIKeyToLocalStore()),
   });
 
   constructor(
