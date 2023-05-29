@@ -1,8 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormGroup, FormControl } from '@angular/forms';
+import { ChatDataService } from '../services/chat-data.service';
 
 @Component({
   selector: 'app-user-dialog',
@@ -19,7 +20,8 @@ export class UserDialogComponent {
 
   constructor(
     public dialogRef: MatDialogRef<UserDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private chatDataService: ChatDataService
   ) {}
 
   ngOnInit(): void {
@@ -31,8 +33,10 @@ export class UserDialogComponent {
   }
 
   keySubmit(): void {
-    if (this.loginForm?.value?.apiKey?.length! <= 0) {
-      return;
+    if (this.loginForm.valid) {
+      this.chatDataService.setAPIKeyToLocalStore(
+        this.loginForm.controls.apiKey.value!
+      );
     }
     this.dialogRef.close(this.loginForm.value);
   }
