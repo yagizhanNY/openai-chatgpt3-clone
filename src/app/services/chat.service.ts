@@ -1,7 +1,3 @@
-// type MessageWithMetaData = {
-//   event: Message[];
-//   uuid: string;
-// };
 import { Injectable } from '@angular/core';
 import { Configuration, OpenAIApi } from 'openai';
 import { Observable, Subject } from 'rxjs';
