@@ -16,6 +16,7 @@ import { LocalStorageState } from '../../shared/models/chat-data-storage.model';
 import { updateChatDataAction } from '../../store/actions/ChatData.action';
 import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-chat-content',
@@ -30,7 +31,8 @@ export class ChatContentComponent
     private markdownService: MarkdownService,
     private chatDataService: ChatDataService,
     private store: Store<LocalStorageState>,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private snackBar: MatSnackBar
   ) {}
 
   @ViewChild('window') window!: any;
@@ -129,16 +131,15 @@ export class ChatContentComponent
         this.chatService.triggerEventForChatCreation(this.messages);
       }
     } catch (err) {
-      const responseMessage: Message = {
-        isResponse: true,
-        message:
-          'API Request Failed, please check after some time or re-verify OpenAI key.',
-        chatName:
-          'Chat ' +
-          JSON.stringify(this.chatDataService.getTotalChatConversation() + 1),
-      };
-      this.messages.push(responseMessage);
-      console.log(err);
+      this.snackBar.open(
+        'API Request Failed, please check after some time or verify the OpenAI key.',
+        'Close',
+        {
+          horizontalPosition: 'end',
+          verticalPosition: 'bottom',
+          duration: 5000,
+        }
+      );
     }
 
     this.isBusy = false;
