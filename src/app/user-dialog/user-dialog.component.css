@@ -1,14 +1,1 @@
-.login-dialog {
-  display: grid;
-  grid-template-rows: auto 1fr;
-}
 
-.mat-dialog-title {
-  align-self: center;
-}
-
-.mat-dialog-content {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}

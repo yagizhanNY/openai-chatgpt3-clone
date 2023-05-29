@@ -117,9 +117,9 @@ export class SidebarComponent implements OnInit {
       data: {
         message:
           "It's not stored in our end, it's only available in your browser localStorage",
-        title: 'Please enter you API key',
+        title: 'Please enter your API key',
       },
-      width: '350px',
+      width: '400px',
     });
 
     dialogRef.afterClosed().subscribe((result) => {
