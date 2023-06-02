@@ -8,8 +8,8 @@
     </div>
   </ng-template>
 
-  <div class="mb-32 h-3/4" *ngIf="messages.length > 1; else elseBlock">
-    <div *ngFor="let message of messages" class="h-full mx-5 text-white">
+  <div id="mainChatContainer" *ngIf="messages.length > 1; else elseBlock">
+    <div *ngFor="let message of messages" class="mx-5 text-white">
       <div *ngIf="message.message !== null">
         <div
           [class]="
