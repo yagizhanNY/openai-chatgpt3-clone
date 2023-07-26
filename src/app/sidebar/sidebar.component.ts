@@ -7,7 +7,6 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ChatDataService } from '../services/chat-data.service';
-import { Message } from '../shared/models/message.model';
 import { v4 as uuidv4 } from 'uuid';
 import { ChatService } from '../services/chat.service';
 import { Router } from '@angular/router';
@@ -18,6 +17,10 @@ import {
   MatDialogConfig,
 } from '@angular/material/dialog';
 import { UserDialogComponent } from '../user-dialog/user-dialog.component';
+import { ApiKeyService } from '../services/api-key.service';
+import { ChatHistoryDetails } from '../shared/models/chat-history-details.model';
+import ChatHistories from '../shared/models/chat-histories.model';
+import { ChatCompletionRequestMessage } from 'openai';
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
@@ -28,88 +31,84 @@ export class SidebarComponent implements OnInit {
     private chatDataService: ChatDataService,
     private chatService: ChatService,
     private router: Router,
-    private dialogModel: MatDialog
+    private dialogModel: MatDialog,
+    private apiKeyService: ApiKeyService
   ) {}
 
+  messages: ChatCompletionRequestMessage[] = [];
+  chatHistories: ChatHistories = {
+    chatHistoryDetails: [],
+  };
   userDialogBox!: MatDialogRef<UserDialogComponent>;
-  totalChatConversation!: number;
-  defaultConversation: string = '';
   apiKey: string = '';
-  allChatData: {
-    [key: string]: {
-      isResponse: boolean;
-      message: string | null;
-      chatName: string;
-    };
-  } = {};
-  keys: string[] = [];
+  isHistoricalChat: boolean = false;
 
   ngOnInit(): void {
-    this.chatDataService.setTotalChatConversation(localStorage.length);
-    this.totalChatConversation =
-      this.chatDataService.getTotalChatConversation();
-
-    this.chatDataService.getTotalChatConversation();
-    if (this.totalChatConversation >= 1) {
-      const currKey = localStorage.key(0);
-      this.defaultConversation = currKey ? currKey : '';
-    }
-    for (let i = 0; i < this.totalChatConversation; i++) {
-      const currentKeyString = localStorage.key(i);
-      if (currentKeyString !== null && currentKeyString !== 'apiKey') {
-        let currentChat =
-          this.chatDataService.getLocalStorage(currentKeyString);
-        if (currentChat !== null) {
-          this.allChatData[currentKeyString] = JSON.parse(currentChat);
-        }
-        this.keys.push(currentKeyString);
-      }
-    }
-
-    this.chatService.getEventForChatCreation().subscribe((event: Message[]) => {
-      if (this.totalChatConversation === 0) {
-        this.addNewChat(event);
-      }
+    this.chatService.getMessagesSubject().subscribe((messages) => {
+      this.messages = messages;
     });
+    this.chatHistories = this.getCurrentChatHistoriesFromLocalStorage();
   }
 
-  addNewChat(data?: Message[]) {
-    this.totalChatConversation += 1;
-    this.chatDataService.setTotalChatConversation(1);
-    const newChatKey = uuidv4();
-    this.keys.push(newChatKey);
-    let newChatDataArray: Message[] = [];
-    if (data) {
-      newChatDataArray = [...data];
-      this.chatDataService.setLocalStorageForAllChat(
-        newChatKey,
-        newChatDataArray
-      );
-    } else {
-      const newChatData: Message = {
-        isResponse: false,
-        message: null,
-        chatName: `Chat ${this.totalChatConversation}`,
+  async addNewChat() {
+    if (this.isHistoricalChat === false) {
+      const chatHistoryId = uuidv4();
+      const title = (await this.chatService.getTitleFromChatGpt(this.messages))
+        .data.choices[0].message?.content!;
+
+      const chatHistory: ChatHistoryDetails = {
+        id: chatHistoryId,
+        messages: this.messages,
+        title: title,
       };
-      newChatDataArray.push(newChatData);
-      this.allChatData[newChatKey] = { ...newChatData };
-      this.chatDataService.setLocalStorageForAllChat(
-        newChatKey,
-        newChatDataArray
-      );
+
+      this.chatHistories = this.getCurrentChatHistoriesFromLocalStorage();
+
+      if (this.checkIsChatHistoryExists(chatHistory.id) === false) {
+        this.chatHistories.chatHistoryDetails.unshift(chatHistory);
+
+        this.setChatHistoriesToLocalStorage(this.chatHistories);
+      }
     }
-    this.router.navigate(['/chat', newChatKey]);
-    this.chatService.triggerEventForChatNavigation(newChatKey);
+    this.chatService.setMessagesSubject([]);
+    this.isHistoricalChat = false;
   }
 
-  getChatName(key: string) {
-    const currChatName = this.chatDataService.getLocalStorage(key);
-    return currChatName ? JSON.parse(currChatName)[0]?.chatName : '';
+  getHistoryChatMessages(id: string) {
+    const history = this.chatHistories.chatHistoryDetails.find(
+      (c) => c.id === id
+    );
+
+    if (history) {
+      this.chatService.setMessagesSubject(history.messages);
+      this.isHistoricalChat = true;
+    }
   }
 
-  onChatBoxClick(uuid: string) {
-    this.chatService.triggerEventForChatNavigation(uuid);
-    this.router.navigate(['/chat', uuid]);
+  getCurrentChatHistoriesFromLocalStorage(): ChatHistories {
+    const currentHistories = localStorage.getItem('chatHistories');
+
+    if (currentHistories) {
+      const histories = JSON.parse(currentHistories) as ChatHistories;
+      return {
+        chatHistoryDetails: histories.chatHistoryDetails,
+      };
+    }
+
+    return {
+      chatHistoryDetails: [],
+    };
+  }
+
+  setChatHistoriesToLocalStorage(chatHistories: ChatHistories) {
+    localStorage.setItem('chatHistories', JSON.stringify(chatHistories));
+  }
+
+  deleteHistoricalChat(id: string) {
+    this.chatHistories.chatHistoryDetails =
+      this.chatHistories.chatHistoryDetails.filter((c) => c.id !== id);
+
+    this.setChatHistoriesToLocalStorage(this.chatHistories);
   }
 
   dialog() {
@@ -125,10 +124,21 @@ export class SidebarComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.apiKey = result.apiKey;
-        this.chatService.updateConfiguration(this.apiKey);
+
+        // Emit the api key event with new api key.
+        this.apiKeyService.setApiKey(this.apiKey);
+
+        this.chatService.updateConfiguration();
       }
       this.chatDataService.setAPIKeyToLocalStore(this.apiKey);
-      // console.log(`Dialog result: ${result.apiKey}  ${JSON.stringify(result)}`);
     });
+  }
+
+  private checkIsChatHistoryExists(id: string) {
+    const result = this.chatHistories.chatHistoryDetails.some(
+      (c) => c.id === id
+    );
+    console.log(result);
+    return result;
   }
 }

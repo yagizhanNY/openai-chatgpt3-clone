@@ -4,6 +4,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormGroup, FormControl } from '@angular/forms';
 import { ChatDataService } from '../services/chat-data.service';
+import { ChatService } from '../services/chat.service';
 
 @Component({
   selector: 'app-user-dialog',
@@ -15,13 +16,14 @@ export class UserDialogComponent {
   message!: string;
 
   loginForm = new FormGroup({
-    apiKey: new FormControl(this.chatDataService.getAPIKeyToLocalStore()),
+    apiKey: new FormControl(this.chatDataService.getAPIKeyFromLocalStore()),
   });
 
   constructor(
     public dialogRef: MatDialogRef<UserDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private chatDataService: ChatDataService
+    private chatDataService: ChatDataService,
+    private chatService: ChatService
   ) {}
 
   ngOnInit(): void {
@@ -37,6 +39,7 @@ export class UserDialogComponent {
       this.chatDataService.setAPIKeyToLocalStore(
         this.loginForm.controls.apiKey.value!
       );
+      this.chatService.updateConfiguration();
     }
     this.dialogRef.close(this.loginForm.value);
   }

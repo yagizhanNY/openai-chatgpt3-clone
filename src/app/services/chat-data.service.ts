@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Message } from '../shared/models/message.model';
+import { ChatHistoryDetails } from '../shared/models/chat-history-details.model';
+import { ChatCompletionRequestMessage } from 'openai';
 
 @Injectable({
   providedIn: 'root',
@@ -10,16 +11,13 @@ export class ChatDataService {
 
   constructor(private store: Store) {}
 
-  public setLocalStorageForAllChat(
-    chatName: string,
-    chatData: Message[]
-  ): void {
-    localStorage.setItem(`${chatName}`, JSON.stringify(chatData));
+  public setLocalStorageForAllChat(chatHistory: ChatHistoryDetails): void {
+    localStorage.setItem(`${chatHistory.id}`, JSON.stringify(chatHistory));
   }
 
   public setLocalStorageForSingleChat(
     chatName: string,
-    chatData: Message
+    chatData: ChatCompletionRequestMessage
   ): void {
     localStorage.setItem(`${chatName}`, JSON.stringify(chatData));
   }
@@ -40,7 +38,7 @@ export class ChatDataService {
     localStorage.setItem('apiKey', key);
   }
 
-  public getAPIKeyToLocalStore(): string | null {
+  public getAPIKeyFromLocalStore(): string | null {
     const apiKey = localStorage.getItem('apiKey');
     if (apiKey) {
       return apiKey;

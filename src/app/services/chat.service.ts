@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Configuration, OpenAIApi } from 'openai';
-import { Observable, Subject } from 'rxjs';
-import { environment } from 'src/environments/environment';
-import { Message } from '../shared/models/message.model';
+import { ChatCompletionRequestMessage, Configuration, OpenAIApi } from 'openai';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { ChatDataService } from './chat-data.service';
 
 @Injectable({
@@ -11,26 +9,29 @@ import { ChatDataService } from './chat-data.service';
 export class ChatService {
   openai!: OpenAIApi;
 
-  private eventSubjectForChatCreation = new Subject<Message[]>();
-  private eventSubjectForChatNavigation = new Subject<string>();
+  messages: ChatCompletionRequestMessage[] = [];
+  private messagesSubject = new BehaviorSubject<ChatCompletionRequestMessage[]>(
+    []
+  );
+  //private eventSubjectForChatNavigation = new Subject<string>();
 
   constructor(private chatDataService: ChatDataService) {
-    this.updateConfiguration(environment.openAiApiKey);
+    this.updateConfiguration();
   }
 
-  public updateConfiguration(apiKey: string): void {
+  public updateConfiguration(): void {
     const configuration = new Configuration({
-      apiKey: apiKey || (this.chatDataService.getAPIKeyToLocalStore() ?? ''),
+      apiKey: this.chatDataService.getAPIKeyFromLocalStore() ?? '',
     });
 
     this.openai = new OpenAIApi(configuration);
   }
 
-  async createCompletionViaOpenAI(prompt: string) {
+  async createCompletionViaOpenAI(messages: ChatCompletionRequestMessage[]) {
     return await this.openai.createChatCompletion(
       {
         model: 'gpt-3.5-turbo',
-        messages: [{ role: 'user', content: prompt }],
+        messages: messages,
       },
       {
         headers: {
@@ -41,20 +42,42 @@ export class ChatService {
     );
   }
 
-  public triggerEventForChatCreation(event: Message[]) {
-    this.eventSubjectForChatCreation.next(event);
+  async getTitleFromChatGpt(messages: ChatCompletionRequestMessage[]) {
+    let gptMessages: ChatCompletionRequestMessage[] = [
+      {
+        role: 'system',
+        content: 'create a max 10 character title from below messages.',
+      },
+    ];
+
+    return await this.openai.createChatCompletion(
+      {
+        model: 'gpt-3.5-turbo',
+        messages: gptMessages.concat(messages),
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'X-User-Agent': 'OpenAPI-Generator/1.0/Javascript',
+        },
+      }
+    );
   }
 
-  public triggerEventForChatNavigation(event: string) {
-    // const {event, uuid} = {...metaData}
-    this.eventSubjectForChatNavigation.next(event);
+  public setMessagesSubject(event: ChatCompletionRequestMessage[]) {
+    this.messagesSubject.next(event);
   }
 
-  public getEventSubjectForChatNavigation(): Observable<string> {
-    return this.eventSubjectForChatNavigation.asObservable();
+  // public triggerEventForChatNavigation(event: string) {
+  //   // const {event, uuid} = {...metaData}
+  //   this.eventSubjectForChatNavigation.next(event);
+  // }
+
+  public getMessagesSubject(): Observable<ChatCompletionRequestMessage[]> {
+    return this.messagesSubject.asObservable();
   }
 
-  public getEventForChatCreation(): Observable<Message[]> {
-    return this.eventSubjectForChatCreation.asObservable();
-  }
+  // public getEventForChatCreation(): Observable<Message[]> {
+  //   return this.eventSubjectForChatCreation.asObservable();
+  // }
 }

@@ -2,26 +2,20 @@
   id="chat-content-container"
   class="flex justify-between min-h-screen flex-col md:pl-[320px]"
 >
-  <ng-template #elseBlock>
-    <div [class]="'justify-center flex items-center p-5'">
-      <h1 [class]="'text-white'">Please start typing some prompt...</h1>
-    </div>
-  </ng-template>
-
-  <div id="mainChatContainer" *ngIf="messages.length > 1; else elseBlock">
+  <div id="mainChatContainer" *ngIf="messages.length > 0">
     <div *ngFor="let message of messages" class="mx-5 text-white">
-      <div *ngIf="message.message !== null">
+      <div *ngIf="message.content !== null">
         <div
           [class]="
             'flex items-center p-5 ' +
-            (message.isResponse === true ? 'bg-[#40414E]' : '')
+            (message.role === 'user' ? 'bg-[#40414E]' : '')
           "
         >
           <img
             height="50"
             width="50"
             [src]="
-              message.isResponse === true
+              message.role === 'assistant'
                 ? '../../assets/img/chatgpt.jpg'
                 : '../../assets/img/user.png'
             "
@@ -29,10 +23,20 @@
             alt="user_photo"
           />
           <div class="align-middle">
-            <div class="prose prose-invert" [innerHTML]="message.message"></div>
+            <div class="prose prose-invert" [innerHTML]="message.content"></div>
           </div>
         </div>
       </div>
+    </div>
+  </div>
+  <div *ngIf="messages.length === 0">
+    <div [class]="'justify-center flex items-center p-5'">
+      <h1 *ngIf="apiKey" [class]="'text-white'">
+        Please start typing some prompt...
+      </h1>
+      <h1 *ngIf="apiKey === null || apiKey === ''" [class]="'text-white'">
+        Please enter your API Key...
+      </h1>
     </div>
   </div>
   <div class="flex mx-5 p-4">

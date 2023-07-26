@@ -1,11 +1,11 @@
 import { ActionReducerMap, createReducer, on } from '@ngrx/store';
 // import { LocalStorageState } from '../../shared/models/chat-data-storage.model';
-import { Message } from 'src/app/shared/models/message.model';
 import * as ChatApplication from '../actions/ChatData.action';
+import { ChatCompletionRequestMessage } from 'openai';
 
 export interface LocalStorageState {
   // id: string;
-  data: Message[];
+  data: ChatCompletionRequestMessage[];
 }
 
 export const initialState: LocalStorageState = {
