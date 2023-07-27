@@ -13,7 +13,6 @@ export class ChatService {
   private messagesSubject = new BehaviorSubject<ChatCompletionRequestMessage[]>(
     []
   );
-  //private eventSubjectForChatNavigation = new Subject<string>();
 
   constructor(private chatDataService: ChatDataService) {
     this.updateConfiguration();
@@ -68,16 +67,7 @@ export class ChatService {
     this.messagesSubject.next(event);
   }
 
-  // public triggerEventForChatNavigation(event: string) {
-  //   // const {event, uuid} = {...metaData}
-  //   this.eventSubjectForChatNavigation.next(event);
-  // }
-
   public getMessagesSubject(): Observable<ChatCompletionRequestMessage[]> {
     return this.messagesSubject.asObservable();
   }
-
-  // public getEventForChatCreation(): Observable<Message[]> {
-  //   return this.eventSubjectForChatCreation.asObservable();
-  // }
 }

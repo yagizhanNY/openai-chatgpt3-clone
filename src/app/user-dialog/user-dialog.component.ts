@@ -1,6 +1,5 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { FormsModule, Validators } from '@angular/forms';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormGroup, FormControl } from '@angular/forms';
 import { ChatDataService } from '../services/chat-data.service';

@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Store } from '@ngrx/store';
 import { ChatHistoryDetails } from '../shared/models/chat-history-details.model';
 import { ChatCompletionRequestMessage } from 'openai';
 
@@ -9,7 +8,7 @@ import { ChatCompletionRequestMessage } from 'openai';
 export class ChatDataService {
   totalChatConversation: number = 0;
 
-  constructor(private store: Store) {}
+  constructor() {}
 
   public setLocalStorageForAllChat(chatHistory: ChatHistoryDetails): void {
     localStorage.setItem(`${chatHistory.id}`, JSON.stringify(chatHistory));

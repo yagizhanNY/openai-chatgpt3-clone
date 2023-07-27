@@ -10,10 +10,7 @@ import { NavbarTitleComponent } from './navbar-title/navbar-title.component';
 import { ButtonsComponent } from './buttons/buttons.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 
-import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { reducers } from './store/reducers/ChatData.reducer';
 import { ChatContentComponent } from './chat/chat-content/chat-content.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
@@ -35,12 +32,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     UserDialogComponent,
   ],
   imports: [
-    StoreModule.forRoot(reducers),
     EffectsModule.forRoot([]),
-    StoreDevtoolsModule.instrument({
-      maxAge: 25,
-      logOnly: true,
-    }),
     BrowserModule,
     FormsModule,
     MatDialogModule,
