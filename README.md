@@ -19,23 +19,17 @@ cd openai-chatgpt3-clone
 
 ## Install the packages
 npm install
-```
 
-After these steps you have to create an OpenAI account to create an API. You can create an account from [this link](https://openai.com/api/). Then you have to create an API key. Copy `apiKey` and `organizationId` and paste it to `src/environments/environment.prod.ts` and `src/environments/environment.ts` files as shown below.
-
-```javascript
-// environment.ts file
-export const environment = {
-  production: false,
-  organizationId: "{your organization id}",
-  openAiApiKey: "{your api key}",
-};
-```
-
-Then you are ready to run the application!
-
-```bash
+## Run the app
 npm run start
 ```
 
-You can try the [DEMO.](chatgpt-clone-yny.web.app/)
+After these steps you have to create an OpenAI account to create an API. You can create an account from [this link](https://openai.com/api/). Then you have to create an API key. Then press the `OpenAI API Key` button on the sidebar and paste your api key to the dialog and press `Submit` button.
+
+You can try the [DEMO](chatgpt-clone-yny.web.app/) with your own API key.
+
+## Supported Features
+
+- Historical chat.
+- Save the chat history.
+- Full capacity of **gpt-3.5-turbo**.
