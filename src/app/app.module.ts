@@ -13,7 +13,6 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { environment } from '../environments/environment';
 import { reducers } from './store/reducers/ChatData.reducer';
 import { ChatContentComponent } from './chat/chat-content/chat-content.component';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -40,7 +39,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     EffectsModule.forRoot([]),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
-      logOnly: environment.production,
+      logOnly: true,
     }),
     BrowserModule,
     FormsModule,
