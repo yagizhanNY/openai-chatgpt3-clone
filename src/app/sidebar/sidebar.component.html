@@ -58,7 +58,10 @@
           *ngFor="let chatDetails of chatHistories.chatHistoryDetails"
           id="chatConversation"
         >
-          <li [attr.data-uuid]="chatDetails.id" class="flex cursor-pointer">
+          <li
+            [attr.data-uuid]="chatDetails.id"
+            class="flex justify-between cursor-pointer"
+          >
             <a
               class="flex items-center w-full p-2 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-black"
               (click)="getHistoryChatMessages(chatDetails.id)"

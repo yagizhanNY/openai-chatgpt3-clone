@@ -43,17 +43,17 @@ export class ChatService {
   }
 
   async getTitleFromChatGpt(messages: ChatCompletionRequestMessage[]) {
-    let gptMessages: ChatCompletionRequestMessage[] = [
-      {
-        role: 'system',
-        content: 'create a max 10 character title from below messages.',
-      },
-    ];
-
     return await this.openai.createChatCompletion(
       {
         model: 'gpt-3.5-turbo',
-        messages: gptMessages.concat(messages),
+        messages: [
+          {
+            role: 'user',
+            content: `create a max 10 character title from below messages. ${JSON.stringify(
+              messages
+            )}`,
+          },
+        ],
       },
       {
         headers: {
