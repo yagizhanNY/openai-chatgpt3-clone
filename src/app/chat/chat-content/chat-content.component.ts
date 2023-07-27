@@ -64,7 +64,7 @@ export class ChatContentComponent
     }
     element.value = '';
     const message: ChatCompletionRequestMessage = {
-      role: 'system',
+      role: 'user',
       content: prompt,
     };
 
