@@ -47,8 +47,13 @@
       name="textInput"
       #textInput
       (keyup.enter)="createCompletion(textInput)"
+      [disabled]="apiKey === null || apiKey === ''"
     ></textarea>
-    <button class="bg-[#40414E] p-3 rounded-r-md" type="button">
+    <button
+      [disabled]="apiKey === null || apiKey === ''"
+      class="bg-[#40414E] p-3 rounded-r-md"
+      type="button"
+    >
       <i
         *ngIf="isBusy === false"
         (click)="createCompletion(textInput)"
