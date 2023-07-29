@@ -26,7 +26,7 @@ npm run start
 
 After these steps you have to create an OpenAI account to create an API. You can create an account from [this link](https://openai.com/api/). Then you have to create an API key. Then press the `OpenAI API Key` button on the sidebar and paste your api key to the dialog and press `Submit` button.
 
-You can try the [DEMO](chatgpt-clone-yny.web.app/) with your own API key.
+You can try the [DEMO](https://chatgpt-clone-yny.web.app/) with your own API key.
 
 ## Supported Features
 
