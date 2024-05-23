@@ -1,25 +1,23 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ChatComponent } from './chat/chat.component';
-import { MarkdownModule } from 'ngx-markdown';
-import { NavbarTitleComponent } from './navbar-title/navbar-title.component';
+import { BrowserModule } from '@angular/platform-browser';
 import { ButtonsComponent } from './buttons/buttons.component';
-import { SidebarComponent } from './sidebar/sidebar.component';
-
-import { EffectsModule } from '@ngrx/effects';
+import { ChatComponent } from './chat/chat.component';
 import { ChatContentComponent } from './chat/chat-content/chat-content.component';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatButtonModule } from '@angular/material/button';
-import { UserDialogComponent } from './user-dialog/user-dialog.component';
+import { EffectsModule } from '@ngrx/effects';
 import { FormsModule } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
+import { MarkdownModule } from 'ngx-markdown';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { NavbarTitleComponent } from './navbar-title/navbar-title.component';
+import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { SidebarComponent } from './sidebar/sidebar.component';
+import { UserDialogComponent } from './user-dialog/user-dialog.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +45,5 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents: [UserDialogComponent],
 })
 export class AppModule {}
