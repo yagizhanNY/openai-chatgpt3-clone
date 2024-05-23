@@ -1,7 +1,7 @@
-import { ChatCompletionRequestMessage } from 'openai';
+import { ChatCompletionMessage } from "openai/resources";
 
 export interface ChatHistoryDetails {
   id: string;
   title: string;
-  messages: ChatCompletionRequestMessage[];
+  messages: ChatCompletionMessage[];
 }

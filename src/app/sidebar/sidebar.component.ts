@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { ChatDataService } from '../services/chat-data.service';
-import { v4 as uuidv4 } from 'uuid';
-import { ChatService } from '../services/chat.service';
-import { Router } from '@angular/router';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { UserDialogComponent } from '../user-dialog/user-dialog.component';
+
 import { ApiKeyService } from '../services/api-key.service';
-import { ChatHistoryDetails } from '../shared/models/chat-history-details.model';
+import { ChatCompletionMessage } from 'openai/resources';
+import { ChatDataService } from '../services/chat-data.service';
 import ChatHistories from '../shared/models/chat-histories.model';
-import { ChatCompletionRequestMessage } from 'openai';
+import { ChatHistoryDetails } from '../shared/models/chat-history-details.model';
+import { ChatService } from '../services/chat.service';
+import { UserDialogComponent } from '../user-dialog/user-dialog.component';
+import { v4 as uuidv4 } from 'uuid';
+
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
@@ -18,12 +19,11 @@ export class SidebarComponent implements OnInit {
   constructor(
     private chatDataService: ChatDataService,
     private chatService: ChatService,
-    private router: Router,
     private dialogModel: MatDialog,
     private apiKeyService: ApiKeyService
   ) {}
 
-  messages: ChatCompletionRequestMessage[] = [];
+  messages: ChatCompletionMessage[] = [];
   chatHistories: ChatHistories = {
     chatHistoryDetails: [],
   };
@@ -42,7 +42,7 @@ export class SidebarComponent implements OnInit {
     if (this.isHistoricalChat === false) {
       const chatHistoryId = uuidv4();
       const title = (await this.chatService.getTitleFromChatGpt(this.messages))
-        .data.choices[0].message?.content!;
+        .choices[0].message?.content!;
 
       const chatHistory: ChatHistoryDetails = {
         id: chatHistoryId,
@@ -126,7 +126,6 @@ export class SidebarComponent implements OnInit {
     const result = this.chatHistories.chatHistoryDetails.some(
       (c) => c.id === id
     );
-    console.log(result);
     return result;
   }
 }

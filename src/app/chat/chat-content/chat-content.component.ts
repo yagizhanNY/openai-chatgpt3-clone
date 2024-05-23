@@ -2,15 +2,15 @@ import {
   AfterViewChecked,
   AfterViewInit,
   Component,
+  ElementRef,
   OnInit,
   ViewChild,
-  ElementRef,
 } from '@angular/core';
+
+import { ApiKeyService } from 'src/app/services/api-key.service';
 import { ChatService } from '../../services/chat.service';
 import { MarkdownService } from 'ngx-markdown';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ApiKeyService } from 'src/app/services/api-key.service';
-import { ChatCompletionRequestMessage } from 'openai';
 
 @Component({
   selector: 'app-chat-content',
@@ -28,7 +28,7 @@ export class ChatContentComponent
   ) {}
 
   @ViewChild('window') window!: any;
-  public messages: ChatCompletionRequestMessage[] = [];
+  public messages: any[] = [];
   apiKey: string | null = '';
   isBusy: boolean = false;
   currChatSelected: string = '';
@@ -63,7 +63,7 @@ export class ChatContentComponent
       return;
     }
     element.value = '';
-    const message: ChatCompletionRequestMessage = {
+    const message: any = {
       role: 'user',
       content: prompt,
     };
@@ -74,12 +74,11 @@ export class ChatContentComponent
       const completion = await this.chatService.createCompletionViaOpenAI(
         this.messages
       );
-      console.log(completion);
       const completionMessage = this.markdownService.parse(
-        completion.data.choices[0].message?.content!
+        completion.choices[0].message?.content!
       );
 
-      const responseMessage: ChatCompletionRequestMessage = {
+      const responseMessage: any = {
         role: 'assistant',
         content: completionMessage,
       };

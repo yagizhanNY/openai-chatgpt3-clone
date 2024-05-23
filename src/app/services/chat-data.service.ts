@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
+import { ChatCompletionMessage } from 'openai/resources';
 import { ChatHistoryDetails } from '../shared/models/chat-history-details.model';
-import { ChatCompletionRequestMessage } from 'openai';
+import { Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +16,7 @@ export class ChatDataService {
 
   public setLocalStorageForSingleChat(
     chatName: string,
-    chatData: ChatCompletionRequestMessage
+    chatData: ChatCompletionMessage
   ): void {
     localStorage.setItem(`${chatName}`, JSON.stringify(chatData));
   }
