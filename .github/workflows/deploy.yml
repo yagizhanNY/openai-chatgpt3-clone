@@ -20,7 +20,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
       - name: Install dependencies
-        run: npm install
+        run: npm install --legacy-peer-deps
       - name: Install Angular CLI
         run: npm install @angular/cli
       - name: Build
