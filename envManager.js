@@ -23,7 +23,6 @@ fs.access(dir, fs.constants.F_OK, (err) => {
     if (fs.existsSync(path.join(dir, file))) {
       console.log("environment.ts created successfully", process.cwd());
       const str = fs.readFileSync(path.join(dir, file), "utf8").toString();
-      console.log(str);
     }
   } catch (err) {
     console.log(err);
