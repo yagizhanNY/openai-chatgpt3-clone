@@ -32,4 +32,4 @@ You can try the [DEMO](https://chatgpt-clone-yny.web.app/) with your own API key
 
 - Historical chat.
 - Save the chat history.
-- Full capacity of **gpt-3.5-turbo**.
+- Full capacity of **gpt-4o**.
